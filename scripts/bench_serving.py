@@ -248,7 +248,9 @@ def main() -> int:
             **{k: summary_metrics[k] for k in METRIC_KEYS},
         })
     rows.append({"check_name": "summary", "status": "stub" if serve_status == "stub" else "ok", "server_identity": summary_metrics.get("server_identity", ""), **params, "e2e_ms": summary_metrics["end_to_end_request_latency_p50_msec"], "ttft_ms": summary_metrics["ttft_p50_msec"], "tpot_ms": summary_metrics["time_per_output_token_tpot_p50_msec"], **{k: summary_metrics[k] for k in METRIC_KEYS}})
-    fieldnames = list(dict.fromkeys(key for row in rows for key in row))
+    for row in rows:
+        row.pop("server_identity", None)
+    fieldnames = list(rows[0].keys())
     with (run_dir / "raw_results.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
