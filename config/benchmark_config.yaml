@@ -37,6 +37,6 @@ sweep:
   num_prompts:
     smoke: 2
     baseline: 24
-    extended: 144
+    extended: 112
   backend: sglang
   dataset_name: synthetic
